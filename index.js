@@ -149,7 +149,26 @@ async function run() {
       }
     });
 
-    
+    /*** REVIEWS ROUTES ***/
+    // Add review
+    app.post("/reviews", async (req, res) => {
+      try {
+        const reviewData = req.body;
+        reviewData.createdAt = new Date();
+
+        const result = await reviewCollection.insertOne(reviewData);
+        res
+          .status(201)
+          .send({ success: true, message: "Review added", data: reviewData });
+      } catch (error) {
+        console.error(error);
+        res
+          .status(500)
+          .send({ success: false, message: "Failed to add review" });
+      }
+    });
+
+
 
 
   } finally {
