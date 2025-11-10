@@ -168,6 +168,22 @@ async function run() {
       }
     });
 
+     // Get reviews for a property
+    app.get("/reviews", async (req, res) => {
+      try {
+        const query = req.query.propertyId
+          ? { propertyId: req.query.propertyId }
+          : {};
+        const reviews = await reviewCollection.find(query).toArray();
+        res.status(200).send(reviews);
+      } catch (error) {
+        console.error(error);
+        res
+          .status(500)
+          .send({ success: false, message: "Failed to fetch reviews" });
+      }
+    });
+
 
 
 
