@@ -94,6 +94,64 @@ async function run() {
     });
 
 
+    app.put("/properties/:id", async (req, res) => {
+      try {
+        const id = req.params.id;
+        const updatedData = req.body;
+
+        if (
+          !updatedData.name ||
+          !updatedData.description ||
+          !updatedData.category ||
+          !updatedData.price ||
+          !updatedData.location ||
+          !updatedData.imageURL
+        ) {
+          return res.status(400).json({ message: "All fields are required!" });
+        }
+
+        const result = await propertyCollection.updateOne(
+          { _id: new ObjectId(id) },
+          { $set: updatedData }
+        );
+
+        if (result.modifiedCount > 0) {
+          res.status(200).json({ message: "Property updated successfully!" });
+        } else {
+          res
+            .status(404)
+            .json({ message: "Property not found or no changes made." });
+        }
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+      }
+    });
+
+    app.delete("/properties/:id", async (req, res) => {
+      const { id } = req.params;
+      try {
+        const result = await propertyCollection.deleteOne({
+          _id: new ObjectId(id),
+        });
+        if (result.deletedCount > 0) {
+          res.status(200).send({ success: true, message: "Property deleted" });
+        } else {
+          res
+            .status(404)
+            .send({ success: false, message: "Property not found" });
+        }
+      } catch (error) {
+        console.error(error);
+        res
+          .status(500)
+          .send({ success: false, message: "Failed to delete property" });
+      }
+    });
+
+    
+
+
   } finally {
     // leave client open for server
   }
