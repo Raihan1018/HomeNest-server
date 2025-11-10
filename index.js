@@ -76,6 +76,23 @@ async function run() {
       }
     });
 
+    app.get("/properties/:id", async (req, res) => {
+      const { id } = req.params;
+      try {
+        const property = await propertyCollection.findOne({
+          _id: new ObjectId(id),
+        });
+        if (property) {
+          res.status(200).json(property);
+        } else {
+          res.status(404).json({ message: "Property not found" });
+        }
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Failed to fetch property" });
+      }
+    });
+
 
   } finally {
     // leave client open for server
