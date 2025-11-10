@@ -40,6 +40,27 @@ async function run() {
       }
       next();
     }
+
+
+     /*** PROPERTIES ROUTES ***/
+    app.post("/properties", verifyUser, async (req, res) => {
+      try {
+        const propertyData = req.body;
+        propertyData.createdAt = new Date();
+
+        const result = await propertyCollection.insertOne(propertyData);
+        res
+          .status(201)
+          .send({ success: true, message: "Property added", data: result });
+      } catch (error) {
+        console.error(error);
+        res
+          .status(500)
+          .send({ success: false, message: "Failed to add property" });
+      }
+    });
+
+    
   } finally {
     // leave client open for server
   }
