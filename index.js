@@ -41,8 +41,7 @@ async function run() {
       next();
     }
 
-
-     /*** PROPERTIES ROUTES ***/
+    /*** PROPERTIES ROUTES ***/
     app.post("/properties", verifyUser, async (req, res) => {
       try {
         const propertyData = req.body;
@@ -59,7 +58,6 @@ async function run() {
           .send({ success: false, message: "Failed to add property" });
       }
     });
-
 
     app.get("/properties", async (req, res) => {
       try {
@@ -92,7 +90,6 @@ async function run() {
         res.status(500).json({ message: "Failed to fetch property" });
       }
     });
-
 
     app.put("/properties/:id", async (req, res) => {
       try {
@@ -168,7 +165,7 @@ async function run() {
       }
     });
 
-     // Get reviews for a property
+    // Get reviews for a property
     app.get("/reviews", async (req, res) => {
       try {
         const query = req.query.propertyId
@@ -183,10 +180,6 @@ async function run() {
           .send({ success: false, message: "Failed to fetch reviews" });
       }
     });
-
-
-
-
   } finally {
     // leave client open for server
   }
