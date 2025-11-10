@@ -60,7 +60,23 @@ async function run() {
       }
     });
 
-    
+
+    app.get("/properties", async (req, res) => {
+      try {
+        const query = req.query.userEmail
+          ? { userEmail: req.query.userEmail }
+          : {};
+        const properties = await propertyCollection.find(query).toArray();
+        res.status(200).send(properties);
+      } catch (error) {
+        console.error(error);
+        res
+          .status(500)
+          .send({ success: false, message: "Failed to fetch properties" });
+      }
+    });
+
+
   } finally {
     // leave client open for server
   }
