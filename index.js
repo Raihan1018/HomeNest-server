@@ -32,6 +32,14 @@ async function run() {
 
     await client.db("admin").command({ ping: 1 });
     console.log("Successfully connected to MongoDB!");
+
+    // Protected middleware simulation
+    function verifyUser(req, res, next) {
+      if (!req.headers["user-email"]) {
+        return res.status(401).send({ message: "Unauthorized" });
+      }
+      next();
+    }
   } finally {
     // leave client open for server
   }
