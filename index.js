@@ -30,7 +30,7 @@ async function run() {
     const propertyCollection = db.collection("properties");
     const reviewCollection = db.collection("reviews");
 
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log("Successfully connected to MongoDB!");
 
     // Protected middleware
