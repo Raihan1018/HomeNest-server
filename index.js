@@ -33,7 +33,7 @@ async function run() {
     await client.db("admin").command({ ping: 1 });
     console.log("Successfully connected to MongoDB!");
 
-    // Protected middleware simulation
+    // Protected middleware
     function verifyUser(req, res, next) {
       if (!req.headers["user-email"]) {
         return res.status(401).send({ message: "Unauthorized" });
@@ -165,7 +165,7 @@ async function run() {
       }
     });
 
-    // Get reviews for a property
+    // Get reviews for a propertys
     app.get("/reviews", async (req, res) => {
       try {
         const query = req.query.propertyId
@@ -181,14 +181,14 @@ async function run() {
       }
     });
   } finally {
-    // leave client open for server
+    //
   }
 }
 
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
-  res.send("Hello HomeNest!");
+  res.send(" HomeNest Server is running!");
 });
 
 app.listen(port, () => {
