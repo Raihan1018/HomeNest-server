@@ -3,7 +3,6 @@ const app = express();
 const port = process.env.PORT || 3000;
 const cors = require("cors");
 const { ObjectId } = require("mongodb");
-
 require("dotenv").config();
 
 const { MongoClient, ServerApiVersion } = require("mongodb");
@@ -30,7 +29,6 @@ async function run() {
     const propertyCollection = db.collection("properties");
     const reviewCollection = db.collection("reviews");
 
-    // await client.db("admin").command({ ping: 1 });
     console.log("Successfully connected to MongoDB!");
 
     // Protected middleware
@@ -42,6 +40,8 @@ async function run() {
     }
 
     /*** PROPERTIES ROUTES ***/
+
+    // Add property
     app.post("/properties", verifyUser, async (req, res) => {
       try {
         const propertyData = req.body;
@@ -59,12 +59,20 @@ async function run() {
       }
     });
 
+    // Get properties
     app.get("/properties", async (req, res) => {
       try {
         const query = req.query.userEmail
           ? { userEmail: req.query.userEmail }
           : {};
-        const properties = await propertyCollection.find(query).toArray();
+        let cursor = propertyCollection.find(query);
+
+        // Sort by newest first if requested
+        if (req.query.sort === "newest") {
+          cursor = cursor.sort({ createdAt: -1 });
+        }
+
+        const properties = await cursor.toArray();
         res.status(200).send(properties);
       } catch (error) {
         console.error(error);
@@ -74,6 +82,7 @@ async function run() {
       }
     });
 
+    // Get property by ID
     app.get("/properties/:id", async (req, res) => {
       const { id } = req.params;
       try {
@@ -91,6 +100,7 @@ async function run() {
       }
     });
 
+    // Update property
     app.put("/properties/:id", async (req, res) => {
       try {
         const id = req.params.id;
@@ -125,6 +135,7 @@ async function run() {
       }
     });
 
+    // Delete property
     app.delete("/properties/:id", async (req, res) => {
       const { id } = req.params;
       try {
@@ -147,6 +158,7 @@ async function run() {
     });
 
     /*** REVIEWS ROUTES ***/
+
     // Add review
     app.post("/reviews", async (req, res) => {
       try {
@@ -165,7 +177,7 @@ async function run() {
       }
     });
 
-    // Get reviews for a propertys
+    // Get reviews (optionally by propertyId)
     app.get("/reviews", async (req, res) => {
       try {
         const query = req.query.propertyId
@@ -181,14 +193,15 @@ async function run() {
       }
     });
   } finally {
-    //
+    // Optionally close client on exit
+    // await client.close();
   }
 }
 
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
-  res.send(" HomeNest Server is running!");
+  res.send("HomeNest Server is running!");
 });
 
 app.listen(port, () => {
