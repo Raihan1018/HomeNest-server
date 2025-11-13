@@ -5,6 +5,10 @@ It uses **MongoDB** as the database and supports environment-based configuration
 
 ---
 
+## client link:
+
+https://github.com/Raihan1018/HomeNest-client.git
+
 ## 🚀 Features
 
 - ⚡ **Express.js** — Fast, minimalist web framework for Node.js
@@ -38,13 +42,24 @@ It uses **MongoDB** as the database and supports environment-based configuration
 ### DB_NAME=yourDatabaseName
 
 # Install dependencies
+
 npm install
 
 # Set up environment variables
+
 Create a .env file as described above.
 
 # Run the server
+
 npm start
 
 # API Base URL
+
 http://localhost:3000
+
+## 🌐 Live Demo (with frontend + backend)
+
+Here are the connected frontend deployments using this backend:
+
+- 🔗 **Netlify:** [https://smart-homenest.netlify.app/](https://smart-homenest.netlify.app/)
+- 🔗 **Vercel:** [https://home-nest-client.vercel.app/](https://home-nest-client.vercel.app/)
